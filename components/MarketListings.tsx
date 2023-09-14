@@ -6,7 +6,7 @@ import AssetModal from "./AssetModal";
 import AssetImage from "./AssetImage";
 import Toast from "./Toast";
 
-export default function HomeListings() {
+export default function MarketList() {
   const [listings, setListings] = useState<Item[]>([]);
   const [loading, setLoading] = useState(false);
 

@@ -6,7 +6,7 @@ export default function Footer() {
           <div className="mb-6 md:mb-0">
             <a href="https://meshjs.dev/" className="flex items-center">
               <img
-                src="https://meshjs.dev/logo-mesh/white/logo-mesh-white-128x128.png"
+                src="https://meshjs.dev/favicon/favicon-32x32.png"
                 className="mr-3 h-8"
                 alt="Logo"
               />
@@ -21,16 +21,6 @@ export default function Footer() {
                 Powered by Mesh
               </h2>
               <p>This starter kit is developerd by Mesh SDK team.</p>
-
-              <h2 className="mt-6 text-sm font-semibold uppercase">
-                Theme by Tailwind CSS
-              </h2>
-              <p>The layout are designed are by Tailwind CSS.</p>
-
-              <h2 className="mt-6 text-sm font-semibold uppercase">
-                Images by QWSTION
-              </h2>
-              <p>The images are provided by QWSTION and Ugmonk.</p>
             </div>
           </div>
         </div>
