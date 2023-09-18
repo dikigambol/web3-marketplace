@@ -16,7 +16,7 @@ export default function Navbar() {
                   <>
                     <img
                       className="h-8 w-auto"
-                      src="/logo.jpg"
+                      src="https://meshjs.dev/logo-mesh/black/logo-mesh-black-128x128.png"
                       alt="logo"
                     />
                   </>
