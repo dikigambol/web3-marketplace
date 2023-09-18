@@ -1,0 +1,7 @@
+{
+    "env": {
+        "MONGODB_URI": "mongodb+srv://w1ndst4lk3r:UB7EtcP4ySeCsaVx@cluster0-nftmarketplace.lxz9gtu.mongodb.net/?retryWrites=true&w=majority",
+        "MONGODB_DBNAME": "Cluster0-nftmarketplace",
+        "NEXT_PUBLIC_NETWORK": "preprod"
+    }
+}
