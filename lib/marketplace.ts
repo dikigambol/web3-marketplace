@@ -2,12 +2,12 @@ import { BasicMarketplace } from "@meshsdk/contracts";
 import { KoiosProvider } from "@meshsdk/core";
 
 export function getMarketplace(wallet) {
-  const blockchainProvider = new KoiosProvider("preprod");
+  const blockchainProvider = new KoiosProvider('preprod');
 
   const marketplace = new BasicMarketplace({
     fetcher: blockchainProvider,
     initiator: wallet,
-    network: "preprod",
+    network: 'preprod',
     signer: wallet,
     submitter: blockchainProvider,
     percentage: 25000, // 2.5%
