@@ -27,11 +27,6 @@ export default function Collection() {
         );
         userAssetsMetadata[asset.unit] = metadata;
       } catch (error) {}
-
-      // for demo only, we restrict only 8 assets
-      if (parseInt(i) > 8) {
-        break;
-      }
     }
     return userAssetsMetadata;
   }
