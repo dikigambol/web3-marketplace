@@ -7,11 +7,11 @@ export function getMarketplace(wallet: BrowserWallet) {
   const marketplace = new BasicMarketplace({
     fetcher: blockchainProvider,
     initiator: wallet,
-    network: 'preprod',
+    network: 'mainnet',
     signer: wallet,
     submitter: blockchainProvider,
     percentage: 10000,
-    owner: "addr_test1qpa0fgzlt5kh0acqhpx9jhp9q2u3pqdq7lg4434akcwds5vwn5cgrr9vd9vp5k09usymjpklzxn93sm68fn003p2qzvq6kvjjq",
+    owner: "addr1q830fhu8wcfflt4gd2yuz4s0kjyg460spcmjfd8jj9l5ukakke7m4mjfvlz4j7fx8urnca58jlwhz003nqtkezqaku2q87xxff",
   });
 
   return marketplace;
