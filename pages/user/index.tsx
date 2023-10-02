@@ -1,4 +1,4 @@
-import { useWallet } from "@meshsdk/react";
+import { useAddress, useWallet } from "@meshsdk/react";
 import { useEffect, useState } from "react";
 import { KoiosProvider } from "@meshsdk/core";
 import AssetImage from "@/components/AssetImage";
@@ -6,7 +6,7 @@ import { ArrowPathIcon } from "@heroicons/react/20/solid";
 import AssetModal from "@/components/AssetModal";
 import { Item } from "@/type/item";
 import { getListingsUser } from "@/lib/axios";
-
+import Link from "next/link";
 const blockchainProvider = new KoiosProvider(process.env.NEXT_PUBLIC_NETWORK!);
 
 export default function Collection() {
@@ -26,7 +26,7 @@ export default function Collection() {
           asset.unit
         );
         userAssetsMetadata[asset.unit] = metadata;
-      } catch (error) {}
+      } catch (error) { }
     }
     return userAssetsMetadata;
   }
@@ -65,6 +65,7 @@ export default function Collection() {
             metadata: {
               image: metadata.image,
               name: metadata.name,
+              description: metadata.description
             },
             owner: walletAddress,
           };
@@ -75,7 +76,7 @@ export default function Collection() {
           }
 
           updatedAssets.push(thisAsset);
-        } catch (error) {}
+        } catch (error) { }
       }
 
       for (let unit in userListings) {
@@ -101,7 +102,7 @@ export default function Collection() {
         <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
           {!connected && (
             <div className="inline-flex items-center justify-center w-full">
-              <h1 className="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900">
+              <h1 className="py-24 mt-10 mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900">
                 Connect wallet to view assets
               </h1>
             </div>
@@ -120,30 +121,32 @@ export default function Collection() {
                 if (a.listing === undefined && b.listing) return 1;
                 return 0;
               })
+              .filter((asset, index, self) => {
+                const isUnitUnique = self.findIndex((a) => a.unit === asset.unit) === index;
+                return isUnitUnique;
+              })
               .map((asset, i) => (
-                <button
+                <Link
                   key={i}
-                  onClick={() => {
-                    setShowModalItem(asset);
-                  }}
+                  href={"/detail-asset/" + asset.unit}
                 >
                   <div className="group">
                     <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-w-7 xl:aspect-h-8">
                       <AssetImage
                         image={asset.metadata.image}
-                        className="h-full w-full object-cover object-center group-hover:opacity-75"
+                        className="h-30 w-full object-cover object-center group-hover:opacity-75"
                       />
                     </div>
-                    <h3 className="mt-4 text-sm text-gray-700">
+                    <h3 className="mt-4 text-sm text-gray-700 text-center">
                       {asset.metadata.name}
                     </h3>
                     {asset.listing && (
-                      <p className="mt-1 text-lg font-medium text-gray-900">
+                      <p className="mt-1 text-lg font-medium text-gray-900 text-center">
                         ₳ {asset.listing.price / 1000000}
                       </p>
                     )}
                   </div>
-                </button>
+                </Link>
               ))}
           </div>
         </div>

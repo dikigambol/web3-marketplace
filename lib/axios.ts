@@ -31,8 +31,8 @@ export async function getLatestListings() {
   return await get("getListings");
 }
 
-export async function searchListings(policy) {
-  return await get("searchListings", { policy });
+export async function searchListings(nameAsset) {
+  return await get("searchListings", { nameAsset });
 }
 
 export async function getListingsUser(address) {
@@ -49,4 +49,8 @@ export async function updateListing(updatedListing) {
 
 export async function deleteListing(unit) {
   return await post("deleteListing", { unit });
+}
+
+export async function getDetailAsset(unitId) {
+  return await get("getDetailAsset", { unitId });
 }

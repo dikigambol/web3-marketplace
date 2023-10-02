@@ -5,18 +5,18 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const policy = req.query.policy;
+  const nameAsset = req.query.nameAsset;
 
   const db = await getDatabase(process.env.MONGODB_DBNAME);
   const collection = db.collection("listings");
 
   let data = await collection
-    .find({ unit: { $regex: policy } })
-    // .sort({ "listing.date": -1 })
+    .find({ "metadata.name": { $regex: nameAsset, $options: "i" } })
     .toArray();
 
-  data.map((item) => {
-    item["owner"] = item.listing.seller;
+  data = data.map((item) => {
+    item.unit = item.unit;
+    return item;
   });
 
   res.status(200).json(data);
