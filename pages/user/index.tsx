@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { KoiosProvider } from "@meshsdk/core";
 import AssetImage from "@/components/AssetImage";
 import { ArrowPathIcon } from "@heroicons/react/20/solid";
-import AssetModal from "@/components/AssetModal";
 import { Item } from "@/type/item";
 import { getListingsUser } from "@/lib/axios";
 import Link from "next/link";
@@ -94,10 +93,6 @@ export default function Collection() {
 
   return (
     <>
-      <AssetModal
-        showModalItem={showModalItem}
-        setShowModalItem={setShowModalItem}
-      />
       <div className="bg-white">
         <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
           {!connected && (
