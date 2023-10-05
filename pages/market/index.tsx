@@ -13,7 +13,7 @@ export default function MarketList() {
     async function load() {
       setLoading(true);
       let data = await getLatestListings();
-      setListings(data);
+      setListings(data); // console.log(data);
       setLoading(false);
     }
     load();
@@ -28,6 +28,9 @@ export default function MarketList() {
             setLoading={setLoading}
             setListings={setListings}
           />
+          <h2 className="text-gray-900 text-lg title-font font-bold mb-1 mt-5">RECENTLY LISTED</h2>
+          <hr />
+          <br />
           {loading ? (
             <div className="flex flex-row justify-center items-center">
               <ArrowPathIcon className="w-48 h-48 text-gray-500 dark:text-gray-400 animate-spin" />
@@ -46,13 +49,24 @@ export default function MarketList() {
                         className="h-30 w-full object-cover object-center group-hover:opacity-75"
                       />
                     </div>
-                    <h3 className="mt-4 text-sm text-gray-700 text-center">
+                    <Link href="#">
+                      <div className="float-left text-purple-700 py-1 rounded-md">
+                        <p className="inline-flex w-48 overflow-hidden truncate text-sm">Artist : {item.owner ? item.owner : ""}</p>
+                      </div>
+                    </Link>
+                    <div className="float-right text-black py-1 px-2 rounded-md">
+                      <p className="inline-flex w-18 text-right text-sm">{item.listing.quantity ? item.listing.quantity + " x" : "1 x"}</p>
+                    </div>
+                    <br />
+                    <h2 className="mt-4 text-md text-gray-900 font-bold">
                       {item.metadata.name}
-                    </h3>
+                    </h2>
                     {item.listing && (
-                      <p className="mt-1 text-lg font-medium text-gray-900 text-center">
+                      <div className="bg-blue-400 text-white">
+                      <p className="mt-1 text-lg font-medium text-center">
                         ₳ {item.listing.price / 1000000}
-                      </p>
+                      </p> 
+                      </div>
                     )}
                   </div>
                 </Link>
