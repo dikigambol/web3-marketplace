@@ -2,6 +2,7 @@ import AssetImage from "@/components/AssetImage";
 import Toast from "@/components/Toast";
 import { addListing, deleteListing, getDetailAsset, updateListing } from "@/lib/axios";
 import { getMarketplace } from "@/lib/marketplace";
+import { Item } from "@/type/item";
 import { ArrowPathIcon } from "@heroicons/react/20/solid";
 import { KoiosProvider } from "@meshsdk/core";
 import { useWallet } from "@meshsdk/react";
@@ -27,7 +28,7 @@ const blockchainProvider = new KoiosProvider(process.env.NEXT_PUBLIC_NETWORK!);
 
 export default function DetailAsset() {
 
-  const [detail, setDetail] = useState(initialState)
+  const [detail, setDetail] = useState<Item[] | any>(initialState)
   const { connected, wallet } = useWallet();
   const [loading, setLoading] = useState<boolean>(false);
   const [loadingDetail, setLoadingDetail] = useState<boolean>(true);
@@ -312,11 +313,11 @@ export default function DetailAsset() {
                   <div className="bg-yellow-100 shadow-md rounded-md p-4 max-w-md mb-6">
                     <h1 className="text-lg font-semibold">Listing in progress &#x1F550;</h1>
                     <p className="text-gray-700 text-sm mt-2">
-                    You can leave this page, but we recommend staying here until the listing process is completed (10 confirmations). 
-                    While it's in progress, you won't be able to perform any actions with this NFT.
-                    <br />
-                    <br />
-                    confirmations: {blockConfirmations}&nbsp;&nbsp;<span className="spinner"></span></p>
+                      You can leave this page, but we recommend staying here until the listing process is completed (10 confirmations).
+                      While it's in progress, you won't be able to perform any actions with this NFT.
+                      <br />
+                      <br />
+                      confirmations: {blockConfirmations}&nbsp;&nbsp;<span className="spinner"></span></p>
                   </div>
                   :
                   <>

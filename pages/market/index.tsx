@@ -6,7 +6,7 @@ import AssetImage from "../../components/AssetImage";
 import Link from "next/link";
 
 export default function MarketList() {
-  const [listings, setListings] = useState<Item[]>([]);
+  const [listings, setListings] = useState<Item[] | any>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -40,7 +40,7 @@ export default function MarketList() {
               {listings.map((item, i) => (
                 <Link
                   key={i}
-                  href={"/detail-asset/" + item.unit}
+                  href={"/asset/" + item.unit}
                 >
                   <div className="group">
                     <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-w-7 xl:aspect-h-8">

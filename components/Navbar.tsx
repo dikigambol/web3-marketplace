@@ -1,7 +1,29 @@
 import Link from "next/link";
-import { CardanoWallet } from "@meshsdk/react";
+import { CardanoWallet, useWallet } from "@meshsdk/react";
+import { useEffect, useState } from "react";
+import { getUsername } from "@/lib/axios";
+import { useAppContext } from "./Context";
 
 export default function Navbar() {
+  const { connected, wallet } = useWallet();
+  const [username, setUsername] = useState("");
+  const { globalState } = useAppContext();
+
+  useEffect(() => {
+    if (connected) {
+      const getAddress = async () => {
+        const walletAddress = (await wallet.getUsedAddresses())[0];
+        const res = await getUsername(walletAddress)
+        if (!res.notfound) {
+          setUsername(res.username)
+        } else {
+          setUsername(walletAddress)
+        }
+      }
+      getAddress()
+    }
+  }, [connected, globalState])
+
   return (
     <div className="bg-white z-50 fixed w-full">
       <header className="relative bg-white">
@@ -27,9 +49,11 @@ export default function Navbar() {
                   <span className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800">
                     <Link href="/market">Market</Link>
                   </span>
-                  <span className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800">
-                    <Link href="/user">My Assets</Link>
-                  </span>
+                  {connected ?
+                    <span className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800">
+                      <Link href={`/${username}`}>Profile</Link>
+                    </span>
+                    : null}
                 </div>
               </div>
               <div className="ml-auto flex items-center">

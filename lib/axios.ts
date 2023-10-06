@@ -54,3 +54,23 @@ export async function deleteListing(unit) {
 export async function getDetailAsset(unitId) {
   return await get("getDetailAsset", { unitId });
 }
+
+export async function getUsername(address) {
+  return await get("getUsername", { address });
+}
+
+export async function getAddress(username) {
+  return await get("getAddress", { username });
+}
+
+export async function getProfile(username) {
+  return await get("getProfile", { username });
+}
+
+export async function addUser(newUser) {
+  return await post("addUser", { newUser });
+}
+
+export async function updateUser(updatedUser) {
+  return await post("updateUser", { updatedUser });
+}

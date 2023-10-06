@@ -1,15 +1,14 @@
 export type Item = {
-  _id?;
-  unit;
-  metadata: { image; name; description };
-  listing?: { price; seller };
-  owner;
-};
-
-export type Detail = {
-  _id?;
-  unit;
-  metadata: { image; name; description };
-  listing?: { price; seller };
-  owner?;
+  _id?: any;
+  unit: string;
+  metadata: { 
+    image: any; 
+    name: any; 
+    description: any 
+  };
+  listing?: { 
+    price: number; 
+    seller: any 
+  };
+  owner: any;
 };
