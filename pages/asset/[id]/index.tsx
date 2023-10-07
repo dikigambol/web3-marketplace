@@ -112,43 +112,7 @@ export default function DetailAsset() {
     }
   }
 
-  async function getTxInfo() {
-    try {
-      const txHash = localStorage.getItem(`${id}`);
-      if (txHash) {
-        updateBlockConfirmations(0)
-        const res = await blockchainProvider.fetchTxInfo(`${txHash}`);
-        const block = await blockchainProvider.fetchBlockInfo(res.block);
-        updateBlockConfirmations(block.confirmations);
-        console.log(block.confirmations);
-      }
-
-      const intervalId = setInterval(async () => {
-        if (txHash) {
-          const res = await blockchainProvider.fetchTxInfo(txHash);
-          const block = await blockchainProvider.fetchBlockInfo(res.block);
-          updateBlockConfirmations(block.confirmations);
-          if (block.confirmations >= 10) {
-            clearInterval(intervalId);
-            localStorage.removeItem(`${id}`)
-          }
-        }
-      }, 10000);
-
-      window.addEventListener('beforeunload', () => {
-        clearInterval(intervalId);
-      });
-
-      window.addEventListener('unload', () => {
-        clearInterval(intervalId);
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
   async function loadDetail() {
-    await getTxInfo();
     await getDetail();
     setLoadingDetail(false);
   }
@@ -173,7 +137,6 @@ export default function DetailAsset() {
       );
       const res = await deleteListing(detail.unit);
       if (res && txBuy) {
-        localStorage.setItem(`${id}`, txBuy)
         setToastType("success");
         setToastMessage("Item purchased");
         setLoading(false);
@@ -212,7 +175,6 @@ export default function DetailAsset() {
           },
         });
         if (res && txList) {
-          localStorage.setItem(`${id}`, txList)
           setToastType("success");
           setToastMessage("Item listed for sale");
           setLoading(false);
@@ -267,7 +229,6 @@ export default function DetailAsset() {
         setToastType("success");
         setToastMessage("Listing cancelled");
         setLoading(false);
-        router.push('/user')
       }
     } catch (error) {
       console.error(error);
@@ -309,101 +270,88 @@ export default function DetailAsset() {
             </div>
             {isOwnNFT ?
               <>
-                {blockConfirmations < 10 && connected ?
-                  <div className="bg-yellow-100 shadow-md rounded-md p-4 max-w-md mb-6">
-                    <h1 className="text-lg font-semibold">Listing in progress &#x1F550;</h1>
-                    <p className="text-gray-700 text-sm mt-2">
-                      You can leave this page, but we recommend staying here until the listing process is completed (10 confirmations).
-                      While it's in progress, you won't be able to perform any actions with this NFT.
-                      <br />
-                      <br />
-                      confirmations: {blockConfirmations}&nbsp;&nbsp;<span className="spinner"></span></p>
-                  </div>
-                  :
+                {walletAddress == "" && detail.listing.seller == "" ? null :
                   <>
-                    {walletAddress == "" && detail.listing.seller == "" ? null :
-                      <>
-                        <div className="flex flex-col mb-10 items-start">
-                          <div className="w-12 h-12 inline-flex items-center justify-center rounded-full bg-indigo-100 text-indigo-500 mb-3">
-                            <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} className="w-6 h-6" viewBox="0 0 24 24">
-                              <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
-                              <circle cx={12} cy={7} r={4} />
-                            </svg>
+                    <div className="flex flex-col mb-10 items-start">
+                      <div className="w-12 h-12 inline-flex items-center justify-center rounded-full bg-indigo-100 text-indigo-500 mb-3">
+                        <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} className="w-6 h-6" viewBox="0 0 24 24">
+                          <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+                          <circle cx={12} cy={7} r={4} />
+                        </svg>
+                      </div>
+                      <div className="flex-grow">
+                        <h2 className="text-gray-900 text-lg title-font font-bold mb-1">Owned by :</h2>
+                        <Link href="#">
+                          <div className="bg-blue-400 text-white py-1 px-2 rounded-md">
+                            <p className="inline-flex items-center w-32 overflow-hidden truncate text-sm">{detail.listing.seller != "" ? detail.owner : walletAddress}</p>
                           </div>
-                          <div className="flex-grow">
-                            <h2 className="text-gray-900 text-lg title-font font-bold mb-1">Owned by :</h2>
-                            <Link href="#">
-                              <div className="bg-blue-400 text-white py-1 px-2 rounded-md">
-                                <p className="inline-flex items-center w-32 overflow-hidden truncate text-sm">{detail.listing.seller != "" ? detail.owner : walletAddress}</p>
+                        </Link>
+                      </div>
+                      <div className="flex-grow">
+                        <h2 className="text-gray-900 text-lg title-font font-bold mb-1 mt-5">Price :</h2>
+                        {detail.owner == walletAddress ? null : <p className="text-green-600 font-bold text-3xl">₳ {listPrice}</p>}
+                        {detail.owner == walletAddress && (
+                          <>
+                            {connected ?
+                              <div className="relative">
+                                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                  ₳
+                                </div>
+                                <input
+                                  className="block w-full rounded-md border-0 p-4 pl-10 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                  placeholder="Listing price"
+                                  onChange={(e) =>
+                                    updateListPrice(e.target.value)
+                                  }
+                                  value={listPrice}
+                                  type="number"
+                                />
+                                <TransactionButton
+                                  connected={connected}
+                                  loading={loading}
+                                  onClick={() => list()}
+                                  label={
+                                    detail.listing.seller == ""
+                                      ? "Sell"
+                                      : "Update"
+                                  }
+                                />
                               </div>
-                            </Link>
-                          </div>
-                          <div className="flex-grow">
-                            <h2 className="text-gray-900 text-lg title-font font-bold mb-1 mt-5">Price :</h2>
-                            {detail.owner == walletAddress ? null : <p className="text-green-600 font-bold text-3xl">₳ {listPrice}</p>}
-                            {detail.owner == walletAddress && (
-                              <>
-                                {connected ?
-                                  <div className="relative">
-                                    <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                      ₳
-                                    </div>
-                                    <input
-                                      className="block w-full rounded-md border-0 p-4 pl-10 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                      placeholder="Listing price"
-                                      onChange={(e) =>
-                                        updateListPrice(e.target.value)
-                                      }
-                                      value={listPrice}
-                                      type="number"
-                                    />
-                                    <TransactionButton
-                                      connected={connected}
-                                      loading={loading}
-                                      onClick={() => list()}
-                                      label={
-                                        detail.listing.seller == ""
-                                          ? "Sell"
-                                          : "Update"
-                                      }
-                                    />
-                                  </div>
-                                  : null}
-                              </>
-                            )}
-                          </div>
-                        </div>
-                        <div className="flex flex-col">
-                          {detail.owner != walletAddress && detail.listing.seller != "" ? (
-                            <button
-                              className={`rounded-md border border-transparent py-3 px-8 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-400`}
-                              onClick={() => purchase()}
-                              disabled={!connected || loading}
-                            >
-                              {loading
-                                ? "loading..."
-                                : connected
-                                  ? "Purchase NFT"
-                                  : "Connect wallet to purchase"}
-                            </button>
-                          ) : null}
-                          {detail.owner == walletAddress && detail.listing.seller != "" ? (
-                            <button
-                              className={`items-center justify-center rounded-md border border-transparent py-3 px-8 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 bg-red-600 hover:bg-red-700 disabled:bg-gray-400`}
-                              onClick={() => cancel()}
-                              disabled={!connected || loading}
-                            >
-                              {loading
-                                ? "loading..."
-                                : connected
-                                  ? "Cancel listing"
-                                  : "Connect wallet to cancel listing"}
-                            </button>
-                          ) : null}
-                        </div>
-                      </>
-                    }
-                  </>}
+                              : null}
+                          </>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex flex-col">
+                      {detail.owner != walletAddress && detail.listing.seller != "" ? (
+                        <button
+                          className={`rounded-md border border-transparent py-3 px-8 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-400`}
+                          onClick={() => purchase()}
+                          disabled={!connected || loading}
+                        >
+                          {loading
+                            ? "loading..."
+                            : connected
+                              ? "Purchase NFT"
+                              : "Connect wallet to purchase"}
+                        </button>
+                      ) : null}
+                      {detail.owner == walletAddress && detail.listing.seller != "" ? (
+                        <button
+                          className={`items-center justify-center rounded-md border border-transparent py-3 px-8 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 bg-red-600 hover:bg-red-700 disabled:bg-gray-400`}
+                          onClick={() => cancel()}
+                          disabled={!connected || loading}
+                        >
+                          {loading
+                            ? "loading..."
+                            : connected
+                              ? "Cancel listing"
+                              : "Connect wallet to cancel listing"}
+                        </button>
+                      ) : null}
+                    </div>
+                  </>
+                }
               </>
               :
               <button
