@@ -9,6 +9,8 @@ import { useRouter } from 'next/router';
 import { useAppContext } from '@/components/Context';
 
 const initialState = {
+  username: '',
+  name: '',
   about: '',
   photo: ''
 }
@@ -113,12 +115,13 @@ export default function EditProfile() {
       if (res) {
         setToastMessage("Profile updated");
         setToastType("success");
-        setTimeout(() => {
-          setToastMessage(undefined);
-          setToastType(undefined)
-        }, 3000);
         setSubmit(false)
         updateGlobalState({ profileChange: true })
+        setTimeout(() => {
+          setToastMessage(undefined);
+          setToastType(undefined);
+          router.push(`${form.username}`);
+        }, 1000);
       }
     } else {
       const res = await updateUser(form)
