@@ -54,6 +54,9 @@ export default function Navbar() {
                       <Link href={`/${username}`}>Profile</Link>
                     </span>
                     : null}
+                  <span className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800">
+                    <Link href="/guide">Guide</Link>
+                  </span>
                 </div>
               </div>
               <div className="ml-auto flex items-center">
