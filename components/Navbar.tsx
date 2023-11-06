@@ -38,7 +38,7 @@ export default function Navbar() {
                   <>
                     <img
                       className="h-8 w-auto"
-                      src="https://meshjs.dev/logo-mesh/black/logo-mesh-black-128x128.png"
+                      src="https://developers.cardano.org/img/cardano-black.svg"
                       alt="logo"
                     />
                   </>

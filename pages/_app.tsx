@@ -11,8 +11,8 @@ export default function App({ Component, pageProps }: AppProps) {
     <MeshProvider>
       <AppProvider>
         <Head>
-          <title>Arshen</title>
-          <meta name="description" content="Marketplace Starter by Mesh SDK" />
+          <title>ADAGINI</title>
+          <meta name="description" content="ADAGINI NFT Marketplace build for Arts, Fans and empowering communities" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="icon" href="https://meshjs.dev/favicon/favicon-32x32.png" />
           <link rel="preconnect" href="https://fonts.googleapis.com" />

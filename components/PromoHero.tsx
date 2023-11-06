@@ -7,12 +7,11 @@ export default function PromoHero() {
         <div className="relative mx-auto max-w-7xl px-4 sm:static sm:px-6 lg:px-8">
           <div className="sm:max-w-lg">
             <h1 className="font text-4xl font-bold tracking-tight sm:text-6xl">
-              <span className="text-yellow-500">Warmindo</span> NFT
+              <span className="text-yellow-500">ADAGINI</span> space
             </h1>
             <h1 className="font text-3xl font-bold tracking-tight text-gray-900 sm:text-6xl">is finally <span className="text-red-600">here.</span></h1>
             <p className="mt-4 text-xl text-gray-500">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-              Perspiciatis similique quidem inventore voluptatem eius<br/><span className="text-emerald-600 font-bold">Get started in 10 minutes. &#x1F44F;</span>
+              NFT Marketplace build for Arts, Fans and empowering communities<br/><span className="text-emerald-600 font-bold">Get started in 10 minutes. &#x1F44F;</span>
             </p>
           </div>
           <div>
@@ -84,7 +83,7 @@ export default function PromoHero() {
 
               <Link href="/market">
                 <span className="inline-block rounded-md border border-transparent bg-cyan-500 py-3 px-8 text-center font-medium text-white hover:bg-cyan-700">
-                  Check our New NFT &#128640;
+                  Explore NFTs &#128640;
                 </span>
               </Link>
             </div>
