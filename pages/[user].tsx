@@ -1,6 +1,6 @@
 import { useWallet } from "@meshsdk/react";
 import { useEffect, useState } from "react";
-import { KoiosProvider } from "@meshsdk/core";
+import { BlockfrostProvider, KoiosProvider } from "@meshsdk/core";
 import AssetImage from "@/components/AssetImage";
 import { ArrowPathIcon } from "@heroicons/react/20/solid";
 import { Item } from "@/type/item";
@@ -9,7 +9,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { Profile } from "@/type/profile";
 
-const blockchainProvider = new KoiosProvider(process.env.NEXT_PUBLIC_NETWORK!);
+// const blockchainProvider = new KoiosProvider(process.env.NEXT_PUBLIC_NETWORK!);
+const blockchainProvider = new BlockfrostProvider('mainnetZcOQz4soDjLcearNCRplceoZYeiQ6Kg5');
 
 export default function Collection() {
     const router = useRouter()

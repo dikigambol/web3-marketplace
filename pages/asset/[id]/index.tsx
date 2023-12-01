@@ -4,7 +4,7 @@ import { addListing, deleteListing, getDetailAsset, updateListing } from "@/lib/
 import { getMarketplace } from "@/lib/marketplace";
 import { Item } from "@/type/item";
 import { ArrowPathIcon } from "@heroicons/react/20/solid";
-import { KoiosProvider } from "@meshsdk/core";
+import { BlockfrostProvider, KoiosProvider } from "@meshsdk/core";
 import { useWallet } from "@meshsdk/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -24,7 +24,8 @@ const initialState = {
   }
 }
 
-const blockchainProvider = new KoiosProvider(process.env.NEXT_PUBLIC_NETWORK!);
+// const blockchainProvider = new KoiosProvider(process.env.NEXT_PUBLIC_NETWORK!);
+const blockchainProvider = new BlockfrostProvider('mainnetZcOQz4soDjLcearNCRplceoZYeiQ6Kg5');
 
 export default function DetailAsset() {
 
