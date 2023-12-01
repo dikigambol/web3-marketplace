@@ -1,8 +1,9 @@
 import { BasicMarketplace } from "@meshsdk/contracts";
-import { BrowserWallet, KoiosProvider } from "@meshsdk/core";
+import { BlockfrostProvider, BrowserWallet, KoiosProvider } from "@meshsdk/core";
 
 export function getMarketplace(wallet: BrowserWallet) {
-  const blockchainProvider = new KoiosProvider(process.env.NEXT_PUBLIC_NETWORK!);
+  // const blockchainProvider = new KoiosProvider(process.env.NEXT_PUBLIC_NETWORK!);
+  const blockchainProvider = new BlockfrostProvider('mainnetZcOQz4soDjLcearNCRplceoZYeiQ6Kg5');
 
   const marketplace = new BasicMarketplace({
     fetcher: blockchainProvider,
