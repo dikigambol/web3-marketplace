@@ -27,6 +27,10 @@ export function post(route: string, body = {}) {
     });
 }
 
+export async function getLastListed() {
+  return await get("getLastListed");
+}
+
 export async function getLatestListings() {
   return await get("getListings");
 }
