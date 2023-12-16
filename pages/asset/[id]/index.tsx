@@ -1,4 +1,5 @@
 import AssetImage from "@/components/AssetImage";
+import AssetAudio from "@/components/AssetAudio";
 import Toast from "@/components/Toast";
 import { addListing, deleteListing, getDetailAsset, updateListing } from "@/lib/axios";
 import { getMarketplace } from "@/lib/marketplace";
@@ -33,6 +34,7 @@ export default function DetailAsset() {
   const { connected, wallet } = useWallet();
   const [loading, setLoading] = useState<boolean>(false);
   const [loadingDetail, setLoadingDetail] = useState<boolean>(true);
+  const [loadingAdditionalFiles, setAdditionalFiles] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<undefined | any>(undefined);
   const [toastType, setToastType] = useState<undefined | any>(undefined);
   const [walletAddress, updateWalletAddress] = useState<string>("");
@@ -78,6 +80,15 @@ export default function DetailAsset() {
         }
         const metadata = await blockchainProvider.fetchAssetMetadata(id);
         let data = await getDetailAsset(id)
+        let hasFiles = metadata.hasOwnProperty('files')
+        let additionalFiles = []
+        if (hasFiles) {
+          additionalFiles = metadata.files
+          setAdditionalFiles(true)
+          console.log(additionalFiles)
+        } else {
+          setAdditionalFiles(false)
+        }
         if (!data.notfound) {
           setDetail((prev) => ({
             ...prev,
@@ -85,8 +96,10 @@ export default function DetailAsset() {
             metadata: {
               image: metadata.image,
               name: metadata.name,
-              description: metadata.description
+              description: metadata.description,
             },
+            hasAdditionalFiles: hasFiles,
+            additionalFiles: additionalFiles,
             owner: data.owner,
             listing: data.listing
           }))
@@ -102,8 +115,10 @@ export default function DetailAsset() {
             metadata: {
               image: metadata.image,
               name: metadata.name,
-              description: metadata.description
+              description: metadata.description,
             },
+            hasAdditionalFiles: hasFiles,
+            additionalFiles: additionalFiles,
             owner: address
           }))
         }
@@ -259,6 +274,20 @@ export default function DetailAsset() {
             <AssetImage
               image={detail.metadata.image}
               className="object-center w-full rounded-xl" />
+            {loadingAdditionalFiles ? 
+              <>
+                {detail.additionalFiles.map((item,i) => (
+                  <>
+                    <br key={i} />
+                    {item.mediaType === "audio/mpeg" || item.mediaType === "audio/ogg" || item.mediaType === "audio/wav" ? 
+                    <>
+                      <AssetAudio audio={item.src} className="block w-full max-w-md mx-auto" type={item.mediaType} />
+                    </> : null}
+                    
+                  </>
+                ))}
+              </> 
+            : null}
           </div>
           <div className="flex flex-col flex-wrap mb-10 lg:w-2/3 lg:pl-12 text-left">
             <div className="flex flex-col mb-5 items-start">
