@@ -11,7 +11,7 @@ export default async function handler(
   let data = await collection
     .find({})
     .sort({ "listing.date": -1 })
-    .limit(4)
+    .limit(12)
     .toArray();
 
   data.map((item) => {
