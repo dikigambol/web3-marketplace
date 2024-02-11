@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { MeshProvider } from "@meshsdk/react";
+import Script from "next/script";
 import Head from "next/head";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -20,6 +21,19 @@ export default function App({ Component, pageProps }: AppProps) {
           <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
         </Head>
         <Navbar />
+        <Script 
+          src="https://www.googletagmanager.com/gtag/js?id=G-YERCCLXBWY" 
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){window.dataLayer.push(arguments);}
+            gtag('js', new Date());
+          
+            gtag('config', 'G-YERCCLXBWY');
+          `}
+        </Script>
         <Component {...pageProps} />
         <Footer />
       </AppProvider>
